@@ -1,0 +1,16 @@
+cfg 
+cloudOutNum 10
+dirIn /home/rimlab/Downloads/stanford_original/
+dirOut .
+formats .ply,.pcd,.csv
+in 
+noiseSigma 0.00
+num 200
+occlPerc 0.00
+out 
+outCsv 1
+outPcd 1
+outPly 1
+radius 0.001
+randPerc 0.0
+transfMax 1.0
