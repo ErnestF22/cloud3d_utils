@@ -7,6 +7,13 @@
 #include <cloud3d_utils/types.h>
 #include <rofl/common/macros.h>
 
+#include <pcl/common/common.h>
+#include <pcl/common/transforms.h>
+#include <pcl/filters/extract_indices.h>
+#include <pcl/filters/uniform_sampling.h>
+#include <pcl/search/kdtree.h>
+#include <pcl/filters/impl/uniform_sampling.hpp>
+
 namespace cloud3d_utils {
 
 //-------------------------------------------------------------------
@@ -20,7 +27,7 @@ class CloudRandomTransformer {
     std::default_random_engine& getRandomEngine();
 
     Transform3 generateRandomTransform(const std::array<bool, 6>& transformAxes,
-                                       float translMax);
+                                       float translMax, bool rot360);
 
     void applyNoiseCloud(const PointCloudType::ConstPtr& cloudIn,
                          float noiseSigmaPerc,

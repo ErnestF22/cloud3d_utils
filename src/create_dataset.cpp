@@ -18,7 +18,7 @@
 
 void createAndSave(cloud3d_utils::PointCloudType::Ptr& cloudOut,
                    cloud3d_utils::CloudMetadata& cloudData,
-                   std::filesystem::path pathCloud);
+                   std::filesystem::path pathCloud, bool rot360);
 
 int main(int argc, char** argv) {
     rofl::ParamMap params;
@@ -33,6 +33,7 @@ int main(int argc, char** argv) {
     cloud3d_utils::CloudMetadata cloudData;
     float radius, scale, translMax;
     int num, cloudOutNum;
+    bool rot360;
     bool outPly, outPcd, outCsv;
     std::string formats, transformAxes;
     std::filesystem::path pathCloudOut;
@@ -64,6 +65,7 @@ int main(int argc, char** argv) {
     params.getParam<bool>("outPly", outPly, true);
     params.getParam<bool>("outCsv", outCsv, true);
     params.getParam<bool>("outPcd", outPcd, true);
+    params.getParam<bool>("rot360", rot360, false);
 
     params.adaptTildeInPaths();
     params.getParam<std::string>("in", filenameIn, "");
@@ -188,7 +190,7 @@ int main(int argc, char** argv) {
                 std::cout << "generating cloud \"" << cloudData.label << "\""
                           << std::endl;
                 *cloudOut = *cloudSampled;
-                createAndSave(cloudOut, cloudData, pathDirOut);
+                createAndSave(cloudOut, cloudData, pathDirOut, rot360);
             }
         } else {
             ARS_ERROR("Unupported cloud format for file \"" << cloudFilenames[i]
@@ -201,7 +203,7 @@ int main(int argc, char** argv) {
 
 void createAndSave(cloud3d_utils::PointCloudType::Ptr& cloudOut,
                    cloud3d_utils::CloudMetadata& cloudData,
-                   std::filesystem::path pathCloud) {
+                   std::filesystem::path pathCloud, bool rot360) {
     std::filesystem::path pathFile;
     cloud3d_utils::PointType pointMin, pointMax;
     cloud3d_utils::PointCloudType::Ptr cloudTmp(
@@ -223,7 +225,7 @@ void createAndSave(cloud3d_utils::PointCloudType::Ptr& cloudOut,
     cloudData.transform =
         cloud3d_utils::CloudRandomTransformer::getInstance()
             .generateRandomTransform(cloudData.transformAxes,
-                                     cloudData.translationMax * size);
+                                     cloudData.translationMax * size, rot360);
     cloud3d_utils::transformCloud(cloudOut, cloudData.transform, cloudTmp);
     cloudOut->swap(*cloudTmp);
 

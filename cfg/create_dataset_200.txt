@@ -1,7 +1,7 @@
 cfg 
 cloudOutNum 10
-dirIn /home/rimlab/Downloads/stanford_original/
-dirOut .
+dirIn ~/Datasets/stanford_original/
+dirOut ~/Datasets/ars3d_dataset_rot45
 formats .ply,.pcd,.csv
 in 
 noiseSigma 0.00
